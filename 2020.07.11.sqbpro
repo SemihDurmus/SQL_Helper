@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/s/Drive_2020/1_CLARUSWAY/14_SLQ/chinook.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached><db schema="company" path="/Users/s/Drive_2020/1_CLARUSWAY/14_SLQ/company.db"/></attached><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="4118"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/><expanded_item id="4" parent="1"/></tab_structure><tab_browse><current_table name="4,6:mainalbums"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="albums" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="300"/><column index="3" value="47"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">SELECT Name FROM tracks;
+SELECT Name, Composer FROM tracks;
+SELECT AlbumId, Title, ArtistId FROM albums;
+SELECT * FROM tracks;
+SELECT DISTINCT Composer FROM tracks;
+SELECT DISTINCT AlbumId, MediaTypeId FROM tracks;
+SELECT Name FROM tracks WHERE Composer = 'Jimi Hendrix';
+SELECT * FROM invoices WHERE total &gt; 10;
+SELECT * FROM invoices WHERE total &gt; 10 LIMIT 4; 
+SELECT * 
+FROM invoices 
+WHERE total&gt;10 
+ORDER BY Total 
+DESC;
+SELECT * FROM invoices WHERE NOT  BillingCountry = 'USA' ORDER BY Total ASC;
+SELECT * FROM invoices WHERE   BillingCountry &lt;&gt; 'USA' ORDER BY Total ASC;
+--COMMENT
+
+
+SELECT * FROM company.employees;
+-- ATTACH EDILEN BIR DATABASE'DEN QUERY YAPILDIGINDA BU SEKILDE KULLANIYORUZ.
+
+--date: 2009-01-12'de 12 ocak'ı dikkate almıyor. 
+--11 ocak'a kadar olan değerleri veriyor. 
+--datetime eklerseniz zaten saat belirlediğiniz için o saate kadar dikkate alıyor.
+
+--hocam normalde between komutu yazdiginiz araligin hem ilk degerini hem son degerini aliyor. 
+--Ancak tarih saatte soyle bir husus var:
+--gunler icinsaat olarak 00:00:00 i baz aliyor. 
+--ornegin Gecen pazar dan (2020-07-05) bu pazara (2020-07-12) aralik verirsek
+--(bugun 00:00:00  a kadar alacagi icin) dogal olarak bugune kadarki verileri getirir. 
+--bugunu dahil etmez
+
+SELECT FirstName, LastName 
+FROM customers 
+WHERE COUNTRY IN ('Belgium', 'Norway', 'Canada', 'USA')
+ORDER BY Country;
+
+--LIKE 
+-- SELECT *
+-- FROM sudent_info 
+-- where county LIKE 'Wo%';
+-- 
+-- SELECT *
+-- FROM sudent_info 
+-- where field LIKE '%Developer';
+
+SELECT first_name
+FROM company.employees 
+where first_name LIKE 'El_is';
+
+SELECT Name
+FROM tracks
+where composer LIKE '%Bach';
+
+--COUNT 
+
+-- SELECT COUNT(column_name)
+-- FROM table
+-- Null olan hucreleri saymaz, duplicateleri sayar.
+--COUNT(*) null olanlari da sayar
+
+SELECT COUNT(TrackId)
+FROM tracks;
+
+--AS (Alias)
+
+SELECT COUNT(TrackId) AS count_of_tracks
+FROM tracks;
+
+SELECT Count(DISTINCT composer) 
+FROM tracks;
+
+SELECT COUNT(DISTINCT Composer) AS number_of_composers
+FROM tracks ;
+
+--MIN 
+
+-- SELECT MIN(salary) AS lowest_salary
+-- FROM employees;
+
+-- SELECT MIN(hire_date) AS earliest_date
+-- FROM employees;
+
+SELECT MIN(Milliseconds) AS Shortest_Track
+FROM tracks;
+
+--MAX 
+
+SELECT MAX(Milliseconds) AS 'Longest_Track'
+FROM tracks;
+
+SELECT MIN(Milliseconds) AS Shortest_Track, MAX(Milliseconds) AS Longest_Track
+FROM tracks;
+
+--What is the name of the longest track?
+SELECT Name, MAX(Milliseconds) AS 'Longest Track'
+FROM tracks;
+-- AS ile tek kelime kullaniliyorsa &quot;&quot; gerek yok.
+
+
+--SUM 
+
+SELECT SUM(Total) AS Total_Income 
+FROM invoices;
+
+
+--AVG 
+--Null'u ignore eder
+
+SELECT AVG(Milliseconds) AS &quot;Avarage track duration&quot;
+FROM tracks;
+
+--quest
+
+SELECT * 
+FROM tracks
+WHERE Name LIKE &quot;%love%&quot;
+LIMIT 5;
+
+
+
+
+
+
+
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
