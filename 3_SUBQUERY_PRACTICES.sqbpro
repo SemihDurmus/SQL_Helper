@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/s/Drive_2020/1_CLARUSWAY/14_SLQ/chinook.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="4118"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,13:mainvacation_plan"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="albums" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="65"/><column index="2" value="300"/><column index="3" value="63"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="vacation_plan" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="50"/><column index="2" value="48"/><column index="3" value="68"/><column index="4" value="73"/><column index="5" value="63"/><column index="6" value="53"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">--Retrieve track id, track name, album id info of the album 'Faceless' 
+
+SELECT TrackId, Name, AlbumId 
+FROM tracks
+WHERE AlbumId = (
+	SELECT AlbumId
+	FROM albums
+	WHERE Title = 'Faceless'
+	)</sql><sql name="SQL 2">--Retrieve track id, track name, album id info of the album 'Faceless' 
+--This time use JOIN
+
+
+SELECT t.TrackId, t.Name, t.AlbumId 
+FROM tracks t
+JOIN albums a ON t.AlbumId = a.AlbumId
+WHERE a.Title = 'Faceless';
+
+--IT'S IMPORTANT TO USE 'WHERE' AFTER 'JOIN'</sql><sql name="SQL 3">--Retrieve track id, track name, album id info of the albums 'Faceless' and 'Let There Be Rock'
+--Multiple row subquery
+
+SELECT TrackId, Name, AlbumId 
+FROM tracks
+WHERE AlbumId IN (
+	SELECT AlbumId 
+	FROM albums
+	WHERE Title IN ('Faceless' , 'Let There Be Rock')
+	)
+</sql><sql name="SQL 4">--Retrieve the invoice of each customer and average invoice 
+--Show 2 decimal digits of average ROUND(float_field, 2)
+
+
+SELECT InvoiceId, BillingAddress,  ROUND((SELECT AVG(Total)  FROM invoices), 2) AS Total_avg
+FROM invoices</sql><sql name="SQL 14">--Add a table to your existing database. 
+-- Name : vacation_plan
+-- Column names: place_id, country, hotel_name, employee_id, vac_length, budget
+
+DROP TABLE IF EXISTS vacation_plan;
+
+CREATE TABLE vacation_plan (
+	place_id INT,
+	country TEXT, 
+	hotel_name TEXT, 
+	employee_id INT, 
+	vac_length INT, 
+	budget REAL
+);
+
+INSERT INTO vacation_plan (place_id, country, hotel_name, employee_id, vac_length, budget)
+VALUES (1, 'Canada', 'Hilton', 1, 5, 10000);
+
+-- Insert more rows of info
+
+INSERT INTO vacation_plan (place_id, country, hotel_name, employee_id, vac_length, budget)
+VALUES	(2, 'Spain', 'Dream', 34, 10, 12000),
+				(3, 'Italy', 'Cloud', 11,15, 14000),
+				(4, 'Greece', 'Clarus', 8, 5, 9000);
+				
+--Employee_id : 11's vacation is cancelled. Delete the relevant row
+
+DELETE FROM vacation_plan
+WHERE employee_id = 11;
+</sql><sql name="SQL 15">-- Drop table vacation_plan and recreate it as defined below:
+--Name : vacation_plan
+-- Column names: place_id(Primary key), country, hotel_name(not null), EmployeeId(foreign key), vac_length, budget
+
+DROP TABLE IF EXISTS vacation_plan;
+
+CREATE TABLE vacation_plan (
+	place_id INT PRIMARY KEY,
+	country TEXT, 
+	hotel_name TEXT NOT NULL, 
+	EmployeeId INT, 
+	vac_length INT, 
+	budget REAL,
+	FOREIGN KEY (EmployeeId)
+	REFERENCES employees (EmployeeId)
+);</sql><sql name="SQL 16"></sql><current_tab id="6"/></tab_sql></sqlb_project>
