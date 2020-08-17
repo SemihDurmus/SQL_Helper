@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/s/Drive_2020/1_CLARUSWAY/14_SLQ/chinook.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="4118"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,6:mainalbums"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="albums" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="300"/><column index="3" value="47"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- Single-Row Subqueries:
+-- 
+-- 1-Write a query to find the maximum duration among the tracks. 
+-- Your query should include TrackId, Name, Milliseconds.
+
+SELECT TrackId, Name, Milliseconds
+FROM tracks
+WHERE Milliseconds = (
+	SELECT MAX(Milliseconds)
+	FROM tracks)</sql><sql name="SQL 2">-- --2-Write a query to find the minimum duration among the tracks. 
+-- Your query should include TrackId, Name, Milliseconds.
+-- 
+SELECT TrackId, Name, Milliseconds
+FROM tracks
+WHERE Milliseconds = (
+	SELECT MIN(Milliseconds)
+	FROM tracks);
+</sql><sql name="SQL 3">--3-Write a query to find the tracks whose bytes are higher than the average of the bytes of all tracks. 
+-- Your query should include TrackId, Name, Bytes, general average and should be ordered by Bytes from highest to lowest. 
+-- General average is the average of all tracks. General average should repeat in every row. 
+-- (Hint: You need to use two subqueries)
+
+SELECT  TrackId, Name, Bytes, (SELECT ROUND(AVG(Bytes), 2) FROM tracks) AS Avg_Bytes
+FROM tracks
+WHERE Bytes &gt; (
+	SELECT AVG(Bytes)
+	FROM tracks
+)
+ORDER BY Bytes DESC;
+	</sql><sql name="SQL 5">--Multiple-Row Subqueries:
+
+--1-Write a query that returns the customers whose sales representatives are Jane Peacock and Margaret Park. 
+----Your query should include CustomerID, First Name and Last Name of the customers.
+
+SELECT CustomerID, FirstName, LastName
+FROM customers
+WHERE SupportRepId IN (
+	SELECT EmployeeId 
+	FROM employees
+	WHERE FirstName IN ('Jane','Margaret') AND LastName IN ('Peacock','Mark')
+)</sql><sql name="SQL 6">--Multiple-Row Subqueries:
+
+--2-Rewrite the subquery Nr.1 using the JOIN.
+----'Write a query that returns the customers whose sales representatives are Jane Peacock and Margaret Park. 
+----Your query should include CustomerID, First Name and Last Name of the customers.'
+
+
+
+SELECT c.CustomerID, c.FirstName, c.LastName
+FROM customers c
+JOIN employees e ON c.SupportRepId = e.EmployeeId
+WHERE e.FirstName IN ('Jane','Margaret') AND e.LastName IN ('Peacock','Mark')
+</sql><current_tab id="4"/></tab_sql></sqlb_project>
