@@ -1,0 +1,126 @@
+--SUBQUERY_DDL_COMMAND_PRACTICES
+
+--Retrieve track id, track name, album id info of the album 'Faceless' 
+
+SELECT TrackId, Name, AlbumId 
+FROM tracks
+WHERE AlbumId = (
+	SELECT AlbumId
+	FROM albums
+	WHERE Title = 'Faceless'
+	)
+
+-------------------------------------
+
+--Retrieve track id, track name, album id info of the album 'Faceless' 
+--This time use JOIN
+
+
+SELECT t.TrackId, t.Name, t.AlbumId 
+FROM tracks t
+JOIN albums a ON t.AlbumId = a.AlbumId
+WHERE a.Title = 'Faceless';
+
+--IT'S IMPORTANT TO USE 'WHERE' AFTER 'JOIN'
+
+
+-------------------------------------
+
+--Retrieve track id, track name, album id info of the albums 
+--'Faceless' and 'Let There Be Rock'
+--Multiple row subquery
+
+SELECT TrackId, Name, AlbumId 
+FROM tracks
+WHERE AlbumId IN (
+	SELECT AlbumId 
+	FROM albums
+	WHERE Title IN ('Faceless' , 'Let There Be Rock')
+	)
+
+-------------------------------------
+
+
+--Retrieve the invoice of each customer and average invoice 
+--Show 2 decimal digits of average ROUND(float_field, 2)
+
+
+SELECT InvoiceId, BillingAddress,  ROUND((SELECT AVG(Total)  FROM invoices), 2) AS Total_avg
+FROM invoices
+
+
+-------------------------------------
+
+
+--Add a table to your existing database. 
+-- Name : vacation_plan
+-- Column names: place_id, country, hotel_name, employee_id, vac_length, budget
+
+DROP TABLE IF EXISTS vacation_plan;
+
+CREATE TABLE vacation_plan (
+	place_id INT,
+	country TEXT, 
+	hotel_name TEXT, 
+	employee_id INT, 
+	vac_length INT, 
+	budget REAL
+);
+
+INSERT INTO vacation_plan (place_id, country, hotel_name, employee_id, vac_length, budget)
+VALUES (1, 'Canada', 'Hilton', 1, 5, 10000);
+
+-- Insert more rows of info
+
+INSERT INTO vacation_plan (place_id, country, hotel_name, employee_id, vac_length, budget)
+VALUES	(2, 'Spain', 'Dream', 34, 10, 12000),
+				(3, 'Italy', 'Cloud', 11,15, 14000),
+				(4, 'Greece', 'Clarus', 8, 5, 9000);
+				
+--Employee_id : 11's vacation is cancelled. Delete the relevant row
+
+DELETE FROM vacation_plan
+WHERE employee_id = 11;
+
+
+-----------------------------------
+
+
+-- Drop table vacation_plan and recreate it as defined below:
+--Name : vacation_plan
+-- Column names: place_id(Primary key), country, hotel_name(not null), EmployeeId(foreign key), vac_length, budget
+
+DROP TABLE IF EXISTS vacation_plan;
+
+CREATE TABLE vacation_plan (
+	place_id INT PRIMARY KEY,
+	country TEXT, 
+	hotel_name TEXT NOT NULL, 
+	EmployeeId INT, 
+	vac_length INT, 
+	budget REAL,
+	FOREIGN KEY (EmployeeId)
+	REFERENCES employees (EmployeeId)
+);
+
+
+--------------------------------
+
+
+-- Add a column to your vacation_plan table named 'city', 
+-- delete the column city
+-- Change datatype of budget to INTEGER
+--Delete table vacation_plan
+
+-- ALTER TABLE vacation_plan
+-- ADD city INT;
+
+-- ALTER TABLE vacation_plan
+-- DROP COLUMN city ;
+-- DOES NOT WORK IN SQLITE--
+
+-- ALTER TABLE vacation_plan
+-- MODIFY COLUMN budget INT;
+-- DOES NOT WORK IN SQLITE--
+
+DROP TABLE vacation_plan;
